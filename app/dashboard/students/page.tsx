@@ -1,14 +1,49 @@
-import Link from "next/link";
-import { ArrowLeft, Search, UserPlus } from "lucide-react";
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { ArrowLeft, UserPlus } from 'lucide-react'
+import { createClient } from '../../../lib/supabase/server'
+import StudentTable from '../../../components/StudentTable'
 
-const students = [
-  ["JPS-2026-001", "Ama Mensah", "Form 3A", "Female", "Active"],
-  ["JPS-2026-002", "Kwame Asante", "Form 3A", "Male", "Active"],
-  ["JPS-2026-003", "Akosua Owusu", "Form 2B", "Female", "Active"],
-  ["JPS-2026-004", "Daniel Boateng", "Form 1C", "Male", "Active"],
-];
+export default async function StudentsPage() {
+  const supabase = await createClient()
 
-export default function StudentsPage() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  const { data: students, error } = await supabase
+    .from('students')
+    .select(
+      'id, admission_number, first_name, middle_name, last_name, gender, status, class_id'
+    )
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-slate-50">
+        <header className="border-b bg-white px-5 py-4 md:px-8">
+          <Link
+            href="/dashboard"
+            className="flex w-fit items-center gap-2 text-sm font-semibold text-blue-700"
+          >
+            <ArrowLeft size={17} />
+            Dashboard
+          </Link>
+        </header>
+
+        <div className="mx-auto max-w-7xl p-5 md:p-8">
+          <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-red-700">
+            Unable to load students: {error.message}
+          </div>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="min-h-screen bg-slate-50">
       <header className="border-b bg-white px-5 py-4 md:px-8">
@@ -30,70 +65,17 @@ export default function StudentsPage() {
             </p>
           </div>
 
-          <button className="flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white">
+          <Link
+            href="/dashboard/students/new"
+            className="flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800"
+          >
             <UserPlus size={17} />
             Add Student
-          </button>
+          </Link>
         </div>
 
-        <div className="card mt-6 overflow-hidden">
-          <div className="border-b p-4">
-            <div className="flex max-w-md items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2">
-              <Search size={17} className="text-slate-400" />
-
-              <input
-                className="w-full bg-transparent text-sm outline-none"
-                placeholder="Search students..."
-              />
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[700px] text-left text-sm">
-              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
-                <tr>
-                  <th className="px-5 py-3">Admission No.</th>
-                  <th className="px-5 py-3">Student</th>
-                  <th className="px-5 py-3">Class</th>
-                  <th className="px-5 py-3">Gender</th>
-                  <th className="px-5 py-3">Status</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y">
-                {students.map((student) => (
-                  <tr
-                    key={student[0]}
-                    className="hover:bg-slate-50"
-                  >
-                    <td className="px-5 py-4 font-medium">
-                      {student[0]}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      {student[1]}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      {student[2]}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      {student[3]}
-                    </td>
-
-                    <td className="px-5 py-4">
-                      <span className="rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-700">
-                        {student[4]}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <StudentTable students={students ?? []} />
       </div>
     </main>
-  );
+  )
 }
