@@ -20,6 +20,7 @@ export default async function Page() {
       title="Subjects"
       description="Manage subjects taught at JIPAS."
       rows={(data ?? []) as Record<string, unknown>[]}
+      table="subjects"
     />
   )
 }

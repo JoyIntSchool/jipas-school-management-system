@@ -10,7 +10,7 @@ export default async function Page() {
   if (!user) redirect('/login')
 
   const { data } = await supabase
-    .from('timetable')
+    .from('timetables')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(100)
@@ -20,6 +20,7 @@ export default async function Page() {
       title="Timetable"
       description="View and manage the school timetable."
       rows={(data ?? []) as Record<string, unknown>[]}
+      table="timetables"
     />
   )
 }

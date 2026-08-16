@@ -20,6 +20,7 @@ export default async function Page() {
       title="Attendance"
       description="Track and review student attendance."
       rows={(data ?? []) as Record<string, unknown>[]}
+      table="attendance"
     />
   )
 }

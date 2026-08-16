@@ -10,7 +10,7 @@ export default async function Page() {
   if (!user) redirect('/login')
 
   const { data } = await supabase
-    .from('academic_results')
+    .from('academic_records')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(100)
@@ -20,6 +20,7 @@ export default async function Page() {
       title="Academic Results"
       description="Manage student academic results."
       rows={(data ?? []) as Record<string, unknown>[]}
+      table="academic_records"
     />
   )
 }

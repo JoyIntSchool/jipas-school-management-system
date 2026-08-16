@@ -20,6 +20,7 @@ export default async function Page() {
       title="Notifications"
       description="Manage school notifications."
       rows={(data ?? []) as Record<string, unknown>[]}
+      table="notifications"
     />
   )
 }
