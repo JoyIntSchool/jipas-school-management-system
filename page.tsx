@@ -1,58 +1,46 @@
 import Link from "next/link";
-import { GraduationCap, ShieldCheck, Users, ArrowRight } from "lucide-react";
+import { ArrowLeft, Search, UserPlus } from "lucide-react";
 
-export default function Home() {
+const students = [
+  ["JPS-2026-001", "Ama Mensah", "Form 3A", "Female", "Active"],
+  ["JPS-2026-002", "Kwame Asante", "Form 3A", "Male", "Active"],
+  ["JPS-2026-003", "Akosua Owusu", "Form 2B", "Female", "Active"],
+  ["JPS-2026-004", "Daniel Boateng", "Form 1C", "Male", "Active"],
+];
+
+export default function StudentsPage() {
   return (
     <main className="min-h-screen bg-slate-50">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-blue-700 p-2 text-white"><GraduationCap size={24} /></div>
-            <div>
-              <p className="font-bold text-slate-900">JIPAS</p>
-              <p className="text-xs text-slate-500">School Management System</p>
+      <header className="border-b bg-white px-5 py-4 md:px-8">
+        <Link href="/dashboard" className="flex w-fit items-center gap-2 text-sm font-semibold text-blue-700"><ArrowLeft size={17}/> Dashboard</Link>
+      </header>
+      <div className="mx-auto max-w-7xl p-5 md:p-8">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div><h1 className="text-2xl font-black">Students</h1><p className="mt-1 text-sm text-slate-500">Manage registered JIPAS students.</p></div>
+          <button className="flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white"><UserPlus size={17}/> Add Student</button>
+        </div>
+
+        <div className="card mt-6 overflow-hidden">
+          <div className="border-b p-4">
+            <div className="flex max-w-md items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2">
+              <Search size={17} className="text-slate-400"/>
+              <input className="w-full bg-transparent text-sm outline-none" placeholder="Search students..." />
             </div>
           </div>
-          <Link href="/dashboard" className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">
-            Open Dashboard
-          </Link>
-        </div>
-      </header>
-
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <div className="max-w-3xl">
-          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">Fresh V1 Foundation</span>
-          <h1 className="mt-5 text-4xl font-black tracking-tight text-slate-950 md:text-6xl">
-            One modern platform for the JIPAS school community.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-            A clean foundation for student records, academic results, attendance, staff management,
-            announcements and school administration.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/dashboard" className="flex items-center gap-2 rounded-xl bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">
-              Enter System <ArrowRight size={18} />
-            </Link>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[700px] text-left text-sm">
+              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
+                <tr><th className="px-5 py-3">Admission No.</th><th className="px-5 py-3">Student</th><th className="px-5 py-3">Class</th><th className="px-5 py-3">Gender</th><th className="px-5 py-3">Status</th></tr>
+              </thead>
+              <tbody className="divide-y">
+                {students.map((s) => <tr key={s[0]} className="hover:bg-slate-50">
+                  {s.map((v) => <td className="px-5 py-4" key={v}><span className={v === "Active" ? "rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-700" : ""}>{v}</span></td>)}
+                </tr>)}
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <div className="mt-16 grid gap-5 md:grid-cols-3">
-          {[
-            [Users, "Student Management", "Profiles, classes, attendance and academic records."],
-            [GraduationCap, "Academic Management", "Subjects, assessments, results and report cards."],
-            [ShieldCheck, "Administration", "Staff, announcements, reports and system controls."]
-          ].map(([Icon, title, text]) => {
-            const I = Icon as typeof Users;
-            return (
-              <div className="card p-6" key={title as string}>
-                <I className="text-blue-700" size={28} />
-                <h2 className="mt-4 text-lg font-bold text-slate-900">{title as string}</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{text as string}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      </div>
     </main>
   );
 }
