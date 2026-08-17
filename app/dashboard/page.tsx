@@ -9,12 +9,12 @@ import {
   ClipboardList,
   GraduationCap,
   LayoutDashboard,
-  LogOut,
   Receipt,
   School,
   Users,
 } from 'lucide-react'
 import { createClient } from '../../lib/supabase/server'
+import LogoutButton from '../../components/LogoutButton'
 
 const modules = [
   ['students', 'Students', 'Manage student records and admissions.', Users],
@@ -57,53 +57,27 @@ export default async function DashboardPage() {
                 <p className="text-xs text-blue-100">Signed in as</p>
                 <p className="mt-1 max-w-[220px] truncate text-sm font-bold">{user.email}</p>
               </div>
-              <Link
-                href="/"
-                aria-label="Return to home"
-                className="hidden rounded-xl bg-white/10 p-3 ring-1 ring-white/10 transition hover:bg-white/20 sm:block"
-              >
-                <LogOut size={19} />
-              </Link>
+              <LogoutButton />
             </div>
           </div>
         </header>
 
         <section className="mb-8 grid gap-4 sm:grid-cols-3">
-          <div className="stat-card flex items-center gap-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><LayoutDashboard size={21} /></div>
-            <div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Modules</p><p className="mt-1 text-2xl font-black text-slate-900">10</p></div>
-          </div>
-          <div className="stat-card flex items-center gap-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><Users size={21} /></div>
-            <div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Access</p><p className="mt-1 text-2xl font-black text-emerald-600">Active</p></div>
-          </div>
-          <div className="stat-card flex items-center gap-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"><School size={21} /></div>
-            <div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Database</p><p className="mt-1 text-2xl font-black text-indigo-600">Connected</p></div>
-          </div>
+          <div className="stat-card flex items-center gap-4"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><LayoutDashboard size={21} /></div><div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Modules</p><p className="mt-1 text-2xl font-black text-slate-900">10</p></div></div>
+          <div className="stat-card flex items-center gap-4"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><Users size={21} /></div><div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Access</p><p className="mt-1 text-2xl font-black text-emerald-600">Active</p></div></div>
+          <div className="stat-card flex items-center gap-4"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"><School size={21} /></div><div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Database</p><p className="mt-1 text-2xl font-black text-indigo-600">Connected</p></div></div>
         </section>
 
         <div className="mb-5 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-blue-700">Workspace</p>
-            <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-900">School Management</h2>
-            <p className="mt-1 text-sm text-slate-500">Select a service to manage school operations.</p>
-          </div>
+          <div><p className="text-sm font-semibold text-blue-700">Workspace</p><h2 className="mt-1 text-2xl font-black tracking-tight text-slate-900">School Management</h2><p className="mt-1 text-sm text-slate-500">Select a service to manage school operations.</p></div>
           <span className="hidden rounded-full bg-white px-3 py-1.5 text-xs font-bold text-slate-500 shadow-sm ring-1 ring-slate-200 sm:inline-block">10 modules</span>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {modules.map(([slug, title, description, Icon]) => (
             <Link key={slug} href={`/dashboard/${slug}`} className="module-card group block">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700 ring-1 ring-blue-100 transition group-hover:bg-blue-700 group-hover:text-white">
-                  <Icon size={22} strokeWidth={2.2} />
-                </div>
-                <ArrowRight className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" size={19} />
-              </div>
-              <h3 className="mt-5 font-extrabold text-slate-900">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-500">{description}</p>
-              <p className="mt-4 text-sm font-bold text-blue-700">Open module</p>
+              <div className="flex items-start justify-between gap-4"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700 ring-1 ring-blue-100 transition group-hover:bg-blue-700 group-hover:text-white"><Icon size={22} strokeWidth={2.2} /></div><ArrowRight className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" size={19} /></div>
+              <h3 className="mt-5 font-extrabold text-slate-900">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{description}</p><p className="mt-4 text-sm font-bold text-blue-700">Open module</p>
             </Link>
           ))}
         </div>
